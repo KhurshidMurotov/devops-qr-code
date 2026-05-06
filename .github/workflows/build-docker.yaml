@@ -1,0 +1,16 @@
+name: Build and Publish image to Docker Hub
+
+on:
+  [workflow_dispatch]
+
+jobs:
+  publish_images:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+      - name: build image
+        run: docker build ./api/ -t khurshidmurotov/trying-devops-and-ci-cd-2:latest
+      - name: push image to docker hub
+        run: |
+          docker push khurshidmurotov/trying-devops-and-ci-cd-2:latest
