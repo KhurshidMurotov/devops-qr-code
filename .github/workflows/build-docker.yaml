@@ -6,15 +6,18 @@ on:
 jobs:
   publish_images:
     runs-on: ubuntu-latest
+    env:
+      API_IMAGE: khurshidmurotov/trying-devops-and-ci-cd-2
+      FRONTEND_IMAGE: khurshidmurotov/trying-devops-and-ci-cd
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: build image
         run: |
-          docker build ./api/ -t khurshidmurotov/trying-devops-and-ci-cd-2:latest
-          docker build ./front-end-nextjs/ -t khurshidmurotov/khurshidmurotov/trying-devops-and-ci-cd:latest
+          docker build ./api/ -t $API_IMAGE:latest
+          docker build ./front-end-nextjs/ -t $FRONTEND_IMAGE:latest
       - name: push image to docker hub
         run: |
-          docker login -u khurshidmurotov -p ${{ secrets.DOCKER_HUB_TOKEN }}
-          docker push khurshidmurotov/trying-devops-and-ci-cd-2:latest
-          docker push khurshidmurotov/trying-devops-and-ci-cd:latest
+          echo "${{ secrets.DOCKER_HUB_TOKEN }}" | docker login -u khurshidmurotov --password-stdin
+          docker push $API_IMAGE:latest
+          docker push $FRONTEND_IMAGE:latest
