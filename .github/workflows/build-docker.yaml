@@ -10,8 +10,11 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v4
       - name: build image
-        run: docker build ./api/ -t khurshidmurotov/trying-devops-and-ci-cd-2:latest
+        run: |
+          docker build ./api/ -t khurshidmurotov/trying-devops-and-ci-cd-2:latest
+          docker build ./front-end-nextjs -t khurshidmurotov/khurshidmurotov/trying-devops-and-ci-cd
       - name: push image to docker hub
         run: |
           docker login -u khurshidmurotov -p ${{ secrets.DOCKER_HUB_TOKEN }}
           docker push khurshidmurotov/trying-devops-and-ci-cd-2:latest
+          docker push khurshidmurotov/trying-devops-and-ci-cd:latest
