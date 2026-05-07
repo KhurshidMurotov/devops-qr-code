@@ -13,4 +13,5 @@ jobs:
         run: docker build ./api/ -t khurshidmurotov/trying-devops-and-ci-cd-2:latest
       - name: push image to docker hub
         run: |
+          docker login -u khurshidmurotov -p ${{ secrets.DOCKER_HUB_TOKEN }}
           docker push khurshidmurotov/trying-devops-and-ci-cd-2:latest
