@@ -1,7 +1,7 @@
 name: Build and Publish image to Docker Hub
 
 on:
-  workflow_dispatch: # Запуск кнопкой в GitHub Actions
+  [workflow_dispatch]
 
 jobs:
   publish_images:
@@ -9,24 +9,12 @@ jobs:
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
-
-      - name: Login to Docker Hub
-        uses: docker/login-action@v3
-        with:
-          username: khurshidmurotov
-          password: ${{ secrets.DOCKER_HUB_TOKEN }}
-
-      - name: Build images
+      - name: build image
         run: |
-          # Собираем API
-          docker build -f api/Dockerfile -t khurshidmurotov/qr-generator-api:latest ./api
-          # Собираем Frontend (исправлено имя пользователя)
-          docker build -f front-end-nextjs/Dockerfile -t khurshidmurotov/qr-generator-frontend:latest ./front-end-nextjs
-
-      - name: Check images
-        run: docker images
-
-      - name: Push images
+          docker build ./api/ -t khurshidmurotov/trying-devops-and-ci-cd-2:latest
+          docker build ./front-end-nextjs/ -t khurshidmurotov/khurshidmurotov/trying-devops-and-ci-cd:latest
+      - name: push image to docker hub
         run: |
-          docker push khurshidmurotov/qr-generator-api:latest
-          docker push khurshidmurotov/qr-generator-frontend:latest
+          docker login -u khurshidmurotov -p ${{ secrets.DOCKER_HUB_TOKEN }}
+          docker push khurshidmurotov/trying-devops-and-ci-cd-2:latest
+          docker push khurshidmurotov/trying-devops-and-ci-cd:latest
